@@ -1,0 +1,9 @@
+// Base
+@import 'variable';
+
+// Vendor packages
+@import '~@coreui/coreui/scss/coreui.scss';
+@import '~react-perfect-scrollbar/dist/css/styles.css';
+
+// Own style
+@import 'custom';

@@ -1,0 +1,13 @@
+#__next {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.auth-bg {
+  background: url('../images/auth-bg.jpg') no-repeat 50%;
+  background-size: cover;
+}
+
+.react-datepicker-popper {
+  width: max-content;
+}
