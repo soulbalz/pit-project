@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import ReactDataTable from 'react-data-table-component';
 import { Button, FormControl, FormGroup } from 'react-bootstrap';
-import { MdDelete, MdEdit, MdVisibility } from 'react-icons/all';
+import { MdDelete, MdEdit, MdVisibility } from 'react-icons/md';
 
 const data = [
   { id: 1, firstName: 'Jon', lastName: 'Snow', age: 35 },
