@@ -1,49 +1,118 @@
-import { DataGrid } from '@material-ui/data-grid';
+import { useEffect, useState } from 'react';
+import ReactDataTable from 'react-data-table-component';
+import { Button, FormControl, FormGroup } from 'react-bootstrap';
+import { MdDelete, MdEdit, MdVisibility } from 'react-icons/all';
+
+const data = [
+  { id: 1, firstName: 'Jon', lastName: 'Snow', age: 35 },
+  { id: 2, firstName: 'Cersei', lastName: 'Lannister', age: 42 },
+  { id: 3, firstName: 'Jaime', lastName: 'Lannister', age: 45 },
+  { id: 4, firstName: 'Arya', lastName: 'Stark', age: 16 },
+  { id: 5, firstName: 'Daenerys', lastName: 'Targaryen', age: null },
+  { id: 6, firstName: null, lastName: 'Melisandre', age: 150 },
+  { id: 7, firstName: 'Ferrara', lastName: 'Clifford', age: 44 },
+  { id: 8, firstName: 'Rossini', lastName: 'Frances', age: 36 },
+  { id: 9, firstName: 'Harvey', lastName: 'Roxie', age: 65 }
+];
 
 const DataTable = ({ path = '' }) => {
   const columns = [{
-    field: 'id',
-    headerName: 'ID',
-    flex: 1
+    name: 'ID',
+    selector: 'id',
+    sortable: true
   }, {
-    field: 'firstName',
-    headerName: 'First name',
-    flex: 1
+    name: 'First name',
+    selector: 'firstName',
+    sortable: true
   }, {
-    field: 'lastName',
-    headerName: 'Last name',
-    flex: 1
+    name: 'Last name',
+    selector: 'lastName',
+    sortable: true
   }, {
-    field: 'age',
-    headerName: 'Age',
-    flex: 1
+    name: 'Age',
+    selector: 'age',
+    sortable: true
   }, {
-    field: 'action',
-    headerName: 'Action',
+    name: 'Action',
     sortable: false,
-    flex: 1,
-    renderCell: (params) => (
-        <>
-          <a href={`${path}/${params.getValue('id')}`} className='btn btn-info mr-2'>ดูข้อมูล</a>
-          <a href={`${path}/${params.getValue('id')}`} className='btn btn-warning mr-2'>แก้ไขข้อมูล</a>
-          <a href={`${path}/${params.getValue('id')}`} className='btn btn-danger'>ลบข้อมูล</a>
-        </>
+    allowOverflow: true,
+    ignoreRowClick: true,
+    button: true,
+    cell: row => (
+      <>
+        <a href={`${path}/${row.id}`} className='btn btn-info btn-lg mr-2'>
+          <MdVisibility />
+        </a>
+        <a href={`${path}/${row.id}/edit`} className='btn btn-warning btn-lg mr-2'>
+          <MdEdit />
+        </a>
+        <Button variant='danger' size='lg'>
+          <MdDelete />
+        </Button>
+      </>
     )
   }];
 
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 }
-  ];
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [totalRows, setTotalRows] = useState(0);
+  const [filterText, setFilterText] = useState('');
+
+  useEffect(() => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setItems(data);
+      setTotalRows(data.length);
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  function handleClickSearch() {
+    const filterData = items.filter(item => item.firstName === filterText || item.lastName === filterText);
+    setItems(filterData);
+  }
+  function handleClearSearch() {
+    if (filterText) {
+      setFilterText('');
+      setItems(data);
+    }
+  }
+
+  const dataTableOptions = {
+    columns: columns,
+    data: items,
+    progressPending: loading,
+    paginationTotalRows: totalRows,
+    striped: true,
+    noHeader: true,
+    sortServer: true,
+    pagination: true,
+    paginationServer: true,
+    paginationResetDefaultPage: true,
+    highlightOnHover: true,
+    pointerOnHover: true,
+    // selectableRows: selectableRows,
+    selectableRowsVisibleOnly: true,
+    selectableRowsHighlight: true,
+    clearSelectedRows: true,
+    paginationPerPage: 25,
+    paginationRowsPerPageOptions: [25],
+    // onSort: handleSort,
+    // onChangePage: handlePageChange,
+    // onSelectedRowsChange: handleSelectedRow,
+    subHeader: true,
+    subHeaderComponent: (
+      <FormGroup className='form-inline'>
+        <FormControl placeholder='ค้นหา...' value={filterText} onChange={e => setFilterText(e.target.value)} />
+        <Button variant='primary' className='ml-1' onClick={handleClickSearch}>ค้นหา</Button>
+        <Button variant='danger' className='ml-1' onClick={handleClearSearch}>ล้าง</Button>
+      </FormGroup>
+    )
+  };
+
   return (
-      <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection autoHeight />
+    <ReactDataTable {...dataTableOptions} />
   );
 };
 

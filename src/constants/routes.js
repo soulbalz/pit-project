@@ -22,10 +22,10 @@ export const ROUTES = [{
   }]
 }, {
   name: 'ออกจากระบบ',
-  path: '#',
+  path: '/auth/logout',
   icon: RiLogoutBoxLine,
-  onClick: async (e) => {
+  onClick: (e) => {
     e.preventDefault();
-    await sendLogOut();
+    sendLogOut();
   }
 }];

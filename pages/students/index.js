@@ -1,7 +1,7 @@
 import Layout from 'src/components/layouts';
 import DataTable from 'src/components/datatables';
 
-export default function List() {
+export default function PageStudent() {
   return (
     <Layout>
       <div className='text-right mb-3'>

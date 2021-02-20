@@ -1,3 +1,6 @@
+import { useSession } from 'next-auth/client';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { RiLockPasswordLine, RiLogoutBoxLine } from 'react-icons/ri';
 import { MdMenu } from 'react-icons/md';
@@ -6,7 +9,12 @@ import Sidebar from 'src/components/layouts/sidebar';
 import { APP_NAME } from 'src/constants';
 import { sendLogOut } from 'src/utils/client';
 
-export default function Index({ children, breadcrumb }) {
+export default function Layout({ children, breadcrumb }) {
+  const router = useRouter();
+  const [session, loading] = useSession();
+
+  if (!session && !loading) router.push('/auth');
+
   const nodeProfileMenu = useRef(null);
 
   const [isShowSidebar, setIsShowSidebar] = useState(true);
@@ -36,9 +44,9 @@ export default function Index({ children, breadcrumb }) {
     setIsChangePasswordModalOpen(true);
   };
 
-  const handleLogOut = async (e) => {
+  const handleLogOut = (e) => {
     e.preventDefault();
-    await sendLogOut();
+    sendLogOut();
   };
 
   return (
@@ -61,10 +69,12 @@ export default function Index({ children, breadcrumb }) {
                 </div>
               </a>
               <div className={`dropdown-menu dropdown-menu-right pt-0 ${isShowProfileMenu ? 'show' : ''}`}>
-                <a className='dropdown-item' href='/' onClick={onClickChangePassword}>
-                  <RiLockPasswordLine className='c-icon mfe-2' /> เปลี่ยนรหัสผ่าน
-                </a>
-                <a className='dropdown-item' href='#' onClick={handleLogOut}>
+                <Link href='/'>
+                  <a className='dropdown-item' onClick={onClickChangePassword}>
+                    <RiLockPasswordLine className='c-icon mfe-2' /> เปลี่ยนรหัสผ่าน
+                  </a>
+                </Link>
+                <a className='dropdown-item' href='/auth/logout' onClick={handleLogOut}>
                   <RiLogoutBoxLine className='c-icon mfe-2' /> ออกจากระบบ
                 </a>
               </div>

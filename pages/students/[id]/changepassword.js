@@ -14,28 +14,12 @@ export default function PageStudentCreate() {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    router.push('/students');
+    router.push(`/students/${router.query.id}`);
   };
 
   return (
     <Layout>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormGroup>
-          <FormLabelRequired label='ชื่อ' />
-          <FormControl name='firstName' isInvalid={errors.firstName} ref={register({ required: true })} />
-        </FormGroup>
-        <FormGroup>
-          <FormLabelRequired label='นามสกุล' />
-          <FormControl name='lastName' isInvalid={errors.lastName} ref={register({ required: true })} />
-        </FormGroup>
-        <FormGroup>
-          <FormLabelRequired label='รหัสนักศึกษา' />
-          <FormControl name='studentCode' isInvalid={errors.studentCode} ref={register({ required: true })} />
-        </FormGroup>
-        <FormGroup>
-          <FormLabelRequired label='อีเมล์' />
-          <FormControl type='email' name='email' isInvalid={errors.email} ref={register({ required: true })} />
-        </FormGroup>
         <FormGroup>
           <FormLabelRequired label='รหัสผ่าน' />
           <FormControl type='password' name='password' isInvalid={errors.password} ref={register({ required: true })} />
@@ -54,7 +38,7 @@ export default function PageStudentCreate() {
         </FormGroup>
         <div className='row'>
           <div className='col'>
-            <Button type='reset' variant='secondary' disabled={isSubmitting} block onClick={() => router.push('/students')}>ยกเลิก</Button>
+            <Button type='reset' variant='secondary' disabled={isSubmitting} block onClick={() => router.push(`/students/${router.query.id}`)}>ยกเลิก</Button>
           </div>
           <div className='col'>
             <Button type='submit' variant='primary' disabled={isSubmitting} block>บันทึก</Button>

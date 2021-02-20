@@ -1,12 +1,7 @@
-export async function sendLogOut() {
-  console.log('sendLogOut');
-}
+import { signOut } from 'next-auth/client';
+import Router from 'next/router';
 
-// export const sendLogOut = async () => {
-//   const res = await fetch('/api/auth/logout');
-//   if (res.ok) {
-//     window.location.href = '/auth/login';
-//   } else {
-//     toast.error('Logout failed.');
-//   }
-// };
+export function sendLogOut() {
+  signOut({ redirect: false });
+  Router.push('/auth');
+}
