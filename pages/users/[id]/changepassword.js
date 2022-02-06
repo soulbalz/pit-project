@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useSession } from 'next-auth/client';
 import { API_URL } from 'src/constants';
 
-export default function PageStudentChangePassword() {
+export default function PageUserChangePassword() {
   const router = useRouter();
   const [session] = useSession();
 
@@ -19,18 +19,18 @@ export default function PageStudentChangePassword() {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    axios.put(`${API_URL}/api/students/${router.query.id}/changepassword`, values, {
+    axios.put(`${API_URL}/api/users/${router.query.id}/changepassword`, values, {
       headers: {
         Authorization: `Bearer ${session.user.apiToken}`
       }
     }).then(res => {
-      router.push(`/students/${router.query.id}`);
+      router.push(`/users/${router.query.id}`);
     }).catch(e => setIsSubmitting(false));
   };
 
   return (
     <Layout>
-      <h3>เปลี่ยนรหัสผ่านนักศึกษา: {router.query.id}</h3>
+      <h3>เปลี่ยนรหัสผ่านบุคลากร: {router.query.id}</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup>
           <FormLabelRequired label='รหัสผ่าน' />
@@ -50,7 +50,7 @@ export default function PageStudentChangePassword() {
         </FormGroup>
         <div className='row'>
           <div className='col'>
-            <Button type='reset' variant='secondary' disabled={isSubmitting} block onClick={() => router.push(`/students/${router.query.id}`)}>ยกเลิก</Button>
+            <Button type='reset' variant='secondary' disabled={isSubmitting} block onClick={() => router.push(`/users/${router.query.id}`)}>ยกเลิก</Button>
           </div>
           <div className='col'>
             <Button type='submit' variant='primary' disabled={isSubmitting} block>บันทึก</Button>

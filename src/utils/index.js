@@ -7,3 +7,8 @@ export function usePrevious(value) {
   });
   return ref.current;
 };
+
+export const hasPerm = (permissions, credentials) => {
+  if (permissions === null || credentials?.role === 'superadmin') return true;
+  return permissions.some(perm => credentials?.role === perm);
+};

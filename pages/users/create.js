@@ -4,11 +4,11 @@ import { Button, FormControl, FormGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { FormLabelRequired } from 'src/components/forms';
 import Layout from 'src/components/layouts';
-import axios from 'axios';
 import { useSession } from 'next-auth/client';
+import axios from 'axios';
 import { API_URL } from 'src/constants';
 
-export default function PageStudentChangePassword() {
+export default function PageUserCreate() {
   const router = useRouter();
   const [session] = useSession();
 
@@ -19,19 +19,31 @@ export default function PageStudentChangePassword() {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    axios.put(`${API_URL}/api/students/${router.query.id}/changepassword`, values, {
+    axios.post(`${API_URL}/api/users`, values, {
       headers: {
         Authorization: `Bearer ${session.user.apiToken}`
       }
     }).then(res => {
-      router.push(`/students/${router.query.id}`);
+      router.push('/users');
     }).catch(e => setIsSubmitting(false));
   };
 
   return (
     <Layout>
-      <h3>เปลี่ยนรหัสผ่านนักศึกษา: {router.query.id}</h3>
+      <h3>เพิ่มบุคลากร</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <FormGroup>
+          <FormLabelRequired label='Username' />
+          <FormControl name='user_code' isInvalid={errors.user_code} ref={register({ required: true })} />
+        </FormGroup>
+        <FormGroup>
+          <FormLabelRequired label='ชื่อ' />
+          <FormControl name='first_name' isInvalid={errors.first_name} ref={register({ required: true })} />
+        </FormGroup>
+        <FormGroup>
+          <FormLabelRequired label='นามสกุล' />
+          <FormControl name='last_name' isInvalid={errors.last_name} ref={register({ required: true })} />
+        </FormGroup>
         <FormGroup>
           <FormLabelRequired label='รหัสผ่าน' />
           <FormControl type='password' name='password' isInvalid={errors.password} ref={register({ required: true })} />
@@ -48,9 +60,22 @@ export default function PageStudentChangePassword() {
             })} />
           {errors.password_confirmation && <FormControl.Feedback type='invalid'>{errors.password_confirmation.message}</FormControl.Feedback>}
         </FormGroup>
+        <FormGroup>
+          <FormLabelRequired label='สิทธิ์การใช้งาน' />
+          <FormControl
+            as='select'
+            name='role'
+            isInvalid={errors.role}
+            ref={register({ required: true })}
+            custom
+          >
+            <option value='teacher'>บุคลากร</option>
+            <option value='admin'>ผู้ดูแลระบบ</option>
+          </FormControl>
+        </FormGroup>
         <div className='row'>
           <div className='col'>
-            <Button type='reset' variant='secondary' disabled={isSubmitting} block onClick={() => router.push(`/students/${router.query.id}`)}>ยกเลิก</Button>
+            <Button type='reset' variant='secondary' disabled={isSubmitting} block onClick={() => router.push('/users')}>ยกเลิก</Button>
           </div>
           <div className='col'>
             <Button type='submit' variant='primary' disabled={isSubmitting} block>บันทึก</Button>

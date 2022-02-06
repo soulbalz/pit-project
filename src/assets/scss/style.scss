@@ -2,9 +2,9 @@
 @import 'variable';
 
 // Vendor packages
-@import '~@coreui/coreui/scss/coreui.scss';
-@import '~react-perfect-scrollbar/dist/css/styles.css';
+@import '~@coreui/coreui/scss/coreui';
 @import '~react-toastify/scss/main';
-
+@import '~react-quill/dist/quill.snow.css';
+@import '~react-perfect-scrollbar/dist/css/styles.css';
 // Own style
 @import 'custom';

@@ -4,9 +4,14 @@ import { Button, FormControl, FormGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { FormLabelRequired } from 'src/components/forms';
 import Layout from 'src/components/layouts';
+import { useSession } from 'next-auth/client';
+import axios from 'axios';
+import { API_URL } from 'src/constants';
 
 export default function PageStudentCreate() {
   const router = useRouter();
+  const [session] = useSession();
+
   const { register, handleSubmit, errors, watch } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -14,27 +19,30 @@ export default function PageStudentCreate() {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    router.push('/students');
+    axios.post(`${API_URL}/api/students`, values, {
+      headers: {
+        Authorization: `Bearer ${session.user.apiToken}`
+      }
+    }).then(res => {
+      router.push('/students');
+    }).catch(e => setIsSubmitting(false));
   };
 
   return (
     <Layout>
+      <h3>เพิ่มนักศึกษา</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup>
+          <FormLabelRequired label='รหัสนักศึกษา' />
+          <FormControl name='user_code' isInvalid={errors.user_code} ref={register({ required: true })} />
+        </FormGroup>
+        <FormGroup>
           <FormLabelRequired label='ชื่อ' />
-          <FormControl name='firstName' isInvalid={errors.firstName} ref={register({ required: true })} />
+          <FormControl name='first_name' isInvalid={errors.first_name} ref={register({ required: true })} />
         </FormGroup>
         <FormGroup>
           <FormLabelRequired label='นามสกุล' />
-          <FormControl name='lastName' isInvalid={errors.lastName} ref={register({ required: true })} />
-        </FormGroup>
-        <FormGroup>
-          <FormLabelRequired label='รหัสนักศึกษา' />
-          <FormControl name='studentCode' isInvalid={errors.studentCode} ref={register({ required: true })} />
-        </FormGroup>
-        <FormGroup>
-          <FormLabelRequired label='อีเมล์' />
-          <FormControl type='email' name='email' isInvalid={errors.email} ref={register({ required: true })} />
+          <FormControl name='last_name' isInvalid={errors.last_name} ref={register({ required: true })} />
         </FormGroup>
         <FormGroup>
           <FormLabelRequired label='รหัสผ่าน' />
@@ -44,13 +52,13 @@ export default function PageStudentCreate() {
           <FormLabelRequired label='ยืนยันรหัสผ่าน' />
           <FormControl
             type='password'
-            name='passwordConfirmation'
-            isInvalid={errors.passwordConfirmation}
+            name='password_confirmation'
+            isInvalid={errors.password_confirmation}
             ref={register({
               required: true,
               validate: value => value === watch('password') || 'รหัสผ่านไม่ตรงกัน'
             })} />
-          {errors.passwordConfirmation && <FormControl.Feedback type='invalid'>{errors.passwordConfirmation.message}</FormControl.Feedback>}
+          {errors.password_confirmation && <FormControl.Feedback type='invalid'>{errors.password_confirmation.message}</FormControl.Feedback>}
         </FormGroup>
         <div className='row'>
           <div className='col'>

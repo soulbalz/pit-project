@@ -1,5 +1,4 @@
 import { useSession } from 'next-auth/client';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { RiLockPasswordLine, RiLogoutBoxLine } from 'react-icons/ri';
@@ -69,11 +68,9 @@ export default function Layout({ children, breadcrumb }) {
                 </div>
               </a>
               <div className={`dropdown-menu dropdown-menu-right pt-0 ${isShowProfileMenu ? 'show' : ''}`}>
-                <Link href='/'>
-                  <a className='dropdown-item' onClick={onClickChangePassword}>
-                    <RiLockPasswordLine className='c-icon mfe-2' /> เปลี่ยนรหัสผ่าน
-                  </a>
-                </Link>
+                <a className='dropdown-item' onClick={onClickChangePassword}>
+                  <RiLockPasswordLine className='c-icon mfe-2' /> เปลี่ยนรหัสผ่าน
+                </a>
                 <a className='dropdown-item' href='/auth/logout' onClick={handleLogOut}>
                   <RiLogoutBoxLine className='c-icon mfe-2' /> ออกจากระบบ
                 </a>

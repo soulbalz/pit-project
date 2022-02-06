@@ -31,19 +31,25 @@ const PageLogin = () => {
 
     if (!res.ok) {
       setIsSubmitting(false);
-      toast.error('Username or Password is not match in our record');
+      toast.error('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
     }
   };
 
   return (
     <div className='container'>
       <div className='row justify-content-center'>
-        <div className='col-md-6'>
+        <div className='col-md-8 col-lg-5'>
           <div className='card-group'>
             <div className='card p-4'>
               <div className='card-body'>
-                <h1>Login</h1>
-                <p className='text-muted'>Sign In to your account</p>
+                <div className='row align-items-baseline'>
+                  <div className='col'>
+                    <h1>เข้าสู่ระบบ</h1>
+                  </div>
+                  <div className='col-auto'>
+                    <a href='/register'>สมัครสมาชิก</a>
+                  </div>
+                </div>
                 <form onSubmit={handleSubmit(sendLogin)}>
                   <InputGroup className='mb-3'>
                     <InputGroup.Prepend>

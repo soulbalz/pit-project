@@ -1,5 +1,7 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
+import axios from 'axios';
+import { INTERNAL_API_URL } from 'src/constants';
 
 export default NextAuth({
   providers: [
@@ -9,10 +11,22 @@ export default NextAuth({
         username: { label: 'Username', type: 'text' },
         password: { label: 'Password', type: 'password' }
       },
-      async authorize({ username }) {
-        if (username === 'superadmin') {
-          return { username };
-        } else {
+      async authorize({ username, password }) {
+        try {
+          const { data } = await axios.post(`${INTERNAL_API_URL}/api/auth`, {
+            username,
+            password
+          });
+
+          return {
+            userCode: data.userCode,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            apiToken: data.apiToken,
+            role: data.role
+          };
+        } catch (e) {
+          console.log(e);
           return null;
         }
       }
@@ -25,7 +39,11 @@ export default NextAuth({
   callbacks: {
     async session(session, token) {
       session.user = {
-        username: token.username
+        userCode: token.userCode,
+        firstName: token.firstName,
+        lastName: token.lastName,
+        apiToken: token.apiToken,
+        role: token.role
       };
       return Promise.resolve(session);
     },
@@ -33,7 +51,11 @@ export default NextAuth({
       const isUserSignedIn = !!user;
       if (isUserSignedIn) {
         token = {
-          username: user.username
+          userCode: user.userCode,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          apiToken: user.apiToken,
+          role: user.role
         };
       }
       return Promise.resolve(token);
