@@ -212,8 +212,8 @@ export default function PageExaminationIntro() {
                   <div dangerouslySetInnerHTML={{ __html: question.name }} />
                 </h3>
                 <TextWYSIWYG
-                  value={answerWritings[question._id]}
-                  onChange={(e) => handlerWritingAnswer(question._id, e.target.value)}
+                  value={answerWritings[question._id] || ''}
+                  onChange={(value) => handlerWritingAnswer(question._id, value)}
                 />
               </div>
             </div>
