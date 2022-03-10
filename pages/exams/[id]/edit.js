@@ -58,7 +58,7 @@ export default function PageExamCreate() {
   };
 
   useEffect(() => {
-    if (session) {
+    if (session && router.query.id) {
       axios.get(`${API_URL}/api/questions/subjects`, {
         headers: {
           Authorization: `Bearer ${session.user.apiToken}`
@@ -75,7 +75,7 @@ export default function PageExamCreate() {
         setItem(data);
       });
     }
-  }, [session]);
+  }, [session, router]);
 
   useEffect(() => {
     setValue('question_choice_group', null);
@@ -97,7 +97,10 @@ export default function PageExamCreate() {
             setValue('question_choice_group', { label: item.question_choice_group, value: item.question_choice_group });
           }
           if (item.question_writing_group) {
-            setValue('question_writing_group', { label: item.question_writing_group, value: item.question_writing_group });
+            setValue('question_writing_group', {
+              label: item.question_writing_group,
+              value: item.question_writing_group
+            });
           }
         }
       });
@@ -110,7 +113,8 @@ export default function PageExamCreate() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormGroup>
           <FormLabelRequired label='ชื่อการสอบ' />
-          <FormControl name='exam_name' isInvalid={errors.exam_name} ref={register({ required: true })} defaultValue={item.name} />
+          <FormControl name='exam_name' isInvalid={errors.exam_name} ref={register({ required: true })}
+                       defaultValue={item.name} />
         </FormGroup>
         <FormGroup>
           <FormLabel>คำอธิบายการสอบ</FormLabel>
@@ -139,13 +143,19 @@ export default function PageExamCreate() {
             control={control}
             options={questionGroups}
             isInvalid={errors.question_choice_group}
-            defaultValue={item.question_choice_group ? { label: item.question_choice_group, value: item.question_choice_group } : null}
+            defaultValue={item.question_choice_group
+              ? {
+                  label: item.question_choice_group,
+                  value: item.question_choice_group
+                }
+              : null}
             isClearable
           />}
         </FormGroup>
         <FormGroup>
           <FormLabel>จำนวนคำถามแบบตัวเลือก</FormLabel>
-          <FormControl type='number' name='total_question_choice' isInvalid={errors.total_question_choice} ref={register()} defaultValue={item.total_question_choice} />
+          <FormControl type='number' name='total_question_choice' isInvalid={errors.total_question_choice}
+                       ref={register()} defaultValue={item.total_question_choice} />
         </FormGroup>
         <FormGroup>
           <FormLabel>ชุดคำถามแบบข้อเขียน</FormLabel>
@@ -154,29 +164,41 @@ export default function PageExamCreate() {
             control={control}
             options={questionGroups}
             isInvalid={errors.question_writing_group}
-            defaultValue={item.question_writing_group ? { label: item.question_writing_group, value: item.question_writing_group } : null}
+            defaultValue={item.question_writing_group
+              ? {
+                  label: item.question_writing_group,
+                  value: item.question_writing_group
+                }
+              : null}
             isClearable
           />}
         </FormGroup>
         <FormGroup>
           <FormLabel>จำนวนคำถามแบบข้อเขียน</FormLabel>
-          <FormControl type='number' name='total_question_writing' isInvalid={errors.total_question_writing} ref={register()} defaultValue={item.total_question_writing} />
+          <FormControl type='number' name='total_question_writing' isInvalid={errors.total_question_writing}
+                       ref={register()} defaultValue={item.total_question_writing} />
         </FormGroup>
         <FormGroup>
           <FormLabelRequired label='เวลาเริ่มทำข้อสอบ' />
-          <FormControl type='datetime-local' name='exam_start' isInvalid={errors.exam_start} ref={register({ required: true })} defaultValue={dayjs(item.exam_start).format('YYYY-MM-DDTHH:mm')} />
+          <FormControl type='datetime-local' name='exam_start' isInvalid={errors.exam_start}
+                       ref={register({ required: true })}
+                       defaultValue={dayjs(item.exam_start).format('YYYY-MM-DDTHH:mm')} />
         </FormGroup>
         <FormGroup>
           <FormLabelRequired label='เวลาสิ้นสุดการทำข้อสอบ' />
-          <FormControl type='datetime-local' name='exam_end' isInvalid={errors.exam_end} ref={register({ required: true })} defaultValue={dayjs(item.exam_end).format('YYYY-MM-DDTHH:mm')} />
+          <FormControl type='datetime-local' name='exam_end' isInvalid={errors.exam_end}
+                       ref={register({ required: true })}
+                       defaultValue={dayjs(item.exam_end).format('YYYY-MM-DDTHH:mm')} />
         </FormGroup>
         <FormGroup>
           <FormLabelRequired label='ระยะเวลาทำข้อสอบ (นาที)' />
-          <FormControl type='number' name='exam_time' isInvalid={errors.exam_time} ref={register({ required: true })} defaultValue={item.exam_time} />
+          <FormControl type='number' name='exam_time' isInvalid={errors.exam_time} ref={register({ required: true })}
+                       defaultValue={item.exam_time} />
         </FormGroup>
         <div className='row'>
           <div className='col'>
-            <Button type='reset' variant='secondary' disabled={isSubmitting} block onClick={() => router.push('/exams')}>ยกเลิก</Button>
+            <Button type='reset' variant='secondary' disabled={isSubmitting} block
+                    onClick={() => router.push('/exams')}>ยกเลิก</Button>
           </div>
           <div className='col'>
             <Button type='submit' variant='primary' disabled={isSubmitting} block>บันทึก</Button>

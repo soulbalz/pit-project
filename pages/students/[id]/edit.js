@@ -31,7 +31,7 @@ export default function PageStudentEdit() {
   };
 
   useEffect(() => {
-    if (session) {
+    if (session && router.query.id) {
       axios.get(`${API_URL}/api/students/${router.query.id}`, {
         headers: {
           Authorization: `Bearer ${session.user.apiToken}`
@@ -42,7 +42,7 @@ export default function PageStudentEdit() {
         setValue('last_name', data.last_name);
       });
     }
-  }, [session]);
+  }, [session, router]);
 
   return (
     <Layout>

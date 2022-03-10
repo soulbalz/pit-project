@@ -13,7 +13,7 @@ export default function PageStudentDetail() {
   const [item, setItem] = useState([]);
 
   useEffect(() => {
-    if (session) {
+    if (session && query.id) {
       axios.get(`${API_URL}/api/students/${query.id}`, {
         headers: {
           Authorization: `Bearer ${session.user.apiToken}`
@@ -22,7 +22,7 @@ export default function PageStudentDetail() {
         setItem(data);
       });
     }
-  }, [session]);
+  }, [session, query]);
 
   return (
     <Layout>

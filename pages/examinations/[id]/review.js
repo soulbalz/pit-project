@@ -28,7 +28,7 @@ export default function PageExaminationIntro() {
   };
 
   useEffect(() => {
-    if (session) {
+    if (session && router.query.id) {
       axios.get(`${API_URL}/api/examinations/${router.query.id}/review`, {
         headers: {
           Authorization: `Bearer ${session.user.apiToken}`
@@ -37,7 +37,7 @@ export default function PageExaminationIntro() {
         setItem(data);
       });
     }
-  }, [session]);
+  }, [session, router]);
 
   return (
     <div className='container'>

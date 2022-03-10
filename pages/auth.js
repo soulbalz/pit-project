@@ -57,7 +57,7 @@ const PageLogin = () => {
                         <FiUser className='c-icon' />
                       </InputGroup.Text>
                     </InputGroup.Prepend>
-                    <FormControl name='username' placeholder='username' isInvalid={errors.username} ref={register({ required: true })} />
+                    <FormControl name='username' placeholder='รหัสนักศึกษา / Email' isInvalid={errors.username} ref={register({ required: true })} />
                   </InputGroup>
                   <InputGroup className='mb-4'>
                     <InputGroup.Prepend>
@@ -65,7 +65,7 @@ const PageLogin = () => {
                         <RiLockPasswordLine className='c-icon' />
                       </InputGroup.Text>
                     </InputGroup.Prepend>
-                    <FormControl type='password' name='password' placeholder='Password' isInvalid={errors.password} ref={register({ required: true })} />
+                    <FormControl type='password' name='password' placeholder='รหัสผ่าน' isInvalid={errors.password} ref={register({ required: true })} />
                   </InputGroup>
 
                   <Button type='submit' variant='primary' className='text-uppercase' disabled={isSubmitting} block>Login</Button>

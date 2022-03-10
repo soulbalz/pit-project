@@ -46,7 +46,7 @@ export default function PageQuestionWritingEdit() {
   };
 
   useEffect(() => {
-    if (session) {
+    if (session && router.query.id) {
       axios.get(`${API_URL}/api/questions/subjects`, {
         headers: {
           Authorization: `Bearer ${session.user.apiToken}`
@@ -63,7 +63,7 @@ export default function PageQuestionWritingEdit() {
         setItem(data);
       });
     }
-  }, [session]);
+  }, [session, router]);
 
   useEffect(() => {
     setValue('question_group', null);

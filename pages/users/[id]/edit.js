@@ -31,7 +31,7 @@ export default function PageUserEdit() {
   };
 
   useEffect(() => {
-    if (session) {
+    if (session && router.query.id) {
       axios.get(`${API_URL}/api/users/${router.query.id}`, {
         headers: {
           Authorization: `Bearer ${session.user.apiToken}`
@@ -43,7 +43,7 @@ export default function PageUserEdit() {
         setValue('role', data.role);
       });
     }
-  }, [session]);
+  }, [session, router]);
 
   return (
     <Layout>

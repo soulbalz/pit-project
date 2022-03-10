@@ -13,7 +13,7 @@ export default function PageUserDetail() {
   const [item, setItem] = useState([]);
 
   useEffect(() => {
-    if (session) {
+    if (session && query.id) {
       axios.get(`${API_URL}/api/users/${query.id}`, {
         headers: {
           Authorization: `Bearer ${session.user.apiToken}`
@@ -22,7 +22,7 @@ export default function PageUserDetail() {
         setItem(data);
       });
     }
-  }, [session]);
+  }, [session, query]);
 
   return (
     <Layout>
